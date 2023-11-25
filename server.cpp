@@ -11,25 +11,40 @@
 #include "chess.h"
 #include <cstdio>
 #include <vector>
+#include <time.h>
+
 
 //gcc program.c -lpthread -Wall -o outfile Remember to link pthread lib
 
-char client_message[256];
+char client_message[255];
 //char buffer[256];
+
+struct user{
+  long userID;
+  char userName[20];
+  long gameID;
+}users;
 
 /*
   TODO:
     - Napisać obsługę rozłączenia klienta od serwera
-    - poprawić odnośniki do odpowiednich gier w wątku, aby nie odnosił się do gry o indeksie gameId, gdyż liczba gier w wektorze może się zmniejszyć
+    - poprawić odnośniki do odpowiednich gier w wątku, aby nie odnosił się do gry o indeksie gameId, gdyż liczba gier w wektorze może się zmniejszyć (poprawione, 
+      ale należy dodać jeszcze mutexa, bo istnieje sytuacja, gdzie funkcja findgameid się wykonuje, a w tym czasie główny wątek usuwa gry)
     - Napisać obsługę zakończenia gry (usuwanie, przekazywanie odpowiedniej wiadomości zwrotnej)
 */
 
+long findGameIndex(long gameID);
+long genGameId();
+long genUserId();
 
 std::vector < chess_game* > games;
+std::vector < user > activeUsers;
+
+
 
 void * socketThread(void *arg)
 {
-  int *args = ((int *)arg);
+  long *args = ((long *)arg);
   int newSocket1 = args[0];
   int newSocket2 = args[1];
   int gameId = args[2];
@@ -37,32 +52,85 @@ void * socketThread(void *arg)
   printf("ns1: %d. ns2: %d, gamid: %d\n",newSocket1,newSocket2,gameId);
   int n;
   char recvMessage[255];
+  char endMessage[255];
 
-  chess_game *game = games[gameId];
-  std::string actualBoard = game->getBoard();
+  int gameIdx = findGameIndex(gameId);
+  chess_game *game = games[gameIdx];
 
   while(1){
     n=recv(newSocket1,recvMessage,sizeof(recvMessage),0);
     printf("%s\n",recvMessage);
-    if(n<1)
+    // Obsługa błędów z recv();
+    if(n==0){
+      printf("Błąd! Odebrano 0 bajtów\n");
       break;
+    }
+    if(n==-1){
+      printf("Błąd recv()==-1\n");
+    }
+
     
     std::string playerMove(recvMessage);
 
     bool validMove = game->MoveFigureString(playerMove);
     if(validMove){
+      int n1,n2;
       printf("\n%s\n",game->getBoard().c_str());
-      send(newSocket2,game->getBoard().c_str(),sizeof(recvMessage),0);
-      send(newSocket1,game->getBoard().c_str(),sizeof(recvMessage),0);
+      n1 = send(newSocket2,game->getBoard().c_str(),sizeof(recvMessage),0);
+      n2 = send(newSocket1,game->getBoard().c_str(),sizeof(recvMessage),0);
+      printf("n1:%d n2:%d\n",n1,n2);
+      if(n1==0||n1==-1||n2==0||n2==-1){
+        printf("Błąd wysyłania\n");
+        break;
+      }
     }
-    memset(&recvMessage, 0, sizeof (recvMessage));
+
+    // 3 - Czarne wygrały
+    // 2 - Białe wygrały
+    // 1 - Remis
+    // 0 - nie koniec
+    switch(game->getIsEnd()){
+      case 0:{
+        //nic się nie dzieje
+        break;
+      }
+      case 1:{
+        endMessage[0] = 'X'; endMessage[1] = 'E';endMessage[2] = '1'; endMessage[3] = '\0';
+        send(newSocket2,endMessage,sizeof(recvMessage),0);
+        send(newSocket1,endMessage,sizeof(recvMessage),0);
+        // Przesłanie użytkownikom informacji o końcu gry, usunięcie gry i rozłączenie użytkowników (opcja nowej gry)
+        break;
+      }
+      case 2:{
+        endMessage[0] = 'X'; endMessage[1] = 'E';endMessage[2] = '2'; endMessage[3] = '\0';
+        send(newSocket2,endMessage,sizeof(recvMessage),0);
+        send(newSocket1,endMessage,sizeof(recvMessage),0);
+        break;
+      }
+      case 3:{
+        endMessage[0] = 'X'; endMessage[1] = 'E';endMessage[2] = '3'; endMessage[3] = '\0';
+        send(newSocket2,endMessage,sizeof(recvMessage),0);
+        send(newSocket1,endMessage,sizeof(recvMessage),0);
+        break;
+      }
+      default:{
+        printf("Nieznany błąd!!!\n");
+        break;
+      }
+    }
+
+
+
   }
+
+
+    memset(&recvMessage, 0, sizeof (recvMessage));
+
   
   pthread_exit(NULL);
 }
 
 int main(){
-
   // ----- Server initialization -----
   int serverSocket, newSocket1, newSocket2;
   struct sockaddr_in serverAddr;
@@ -91,24 +159,59 @@ int main(){
 
   int notPairedClients = 0;
 
+  long userId1;
+  long userId2;
+  char userName1[20];
+  char userName2[20];
   while(1)
     {
         //Accept call creates a new socket for the incoming connection
         addr_size = sizeof serverStorage;
+        
 
         if(notPairedClients==0){
+          bzero(client_message,sizeof(client_message));
           newSocket1 = accept(serverSocket, (struct sockaddr *) &serverStorage, &addr_size);
+          if(recv(newSocket1,client_message,sizeof(client_message),0)<1){
+            printf("bład przypisania nazwy: %s\n",client_message);
+            break;
+          }
+          for(int i=0;i<20;i++){
+            userName1[i]=client_message[i];
+          }
+          userId1 = genUserId();
           notPairedClients++;
         }
         if(notPairedClients==1){
           newSocket2 = accept(serverSocket, (struct sockaddr *) &serverStorage, &addr_size);
+          if(recv(newSocket2,client_message,sizeof(client_message),0)<1){
+            printf("bład przypisania nazwy\n");
+            break;
+          }
+          for(int i=0;i<20;i++){
+            userName2[i]=client_message[i];
+          }
+          userId2 = genUserId();
           notPairedClients++;
         }
         if(notPairedClients==2){
-          int gameId = games.size();
+          long gameId = genGameId();
           games.push_back(new chess_game(gameId,true));
-          int socketArray1[3] = {newSocket1,newSocket2,gameId};
-          int socketArray2[3] = {newSocket2,newSocket1,gameId};
+          long socketArray1[3] = {newSocket1,newSocket2,gameId};
+          long socketArray2[3] = {newSocket2,newSocket1,gameId};
+          user user1, user2;
+
+          user1.userID=userId1;
+          strcpy(user1.userName,userName1);
+          user1.gameID = gameId;
+
+          user2.userID=userId2;
+          strcpy(user2.userName,userName2);
+          user2.gameID = gameId;
+
+          activeUsers.push_back(user1);
+          activeUsers.push_back(user2);
+
           if( pthread_create(&thread_id1,NULL,socketThread,&socketArray1) != 0 )
            printf("Failed to create thread\n");
 
@@ -117,11 +220,50 @@ int main(){
 
           pthread_detach(thread_id1);
           pthread_detach(thread_id2);
-          printf("Created game: gameid %d\n",gameId);
+          printf("Created game: gameid %ld\n",gameId);
           notPairedClients = 0;
         }
         
         //pthread_join(TODO);?
     }
   return 0;
+}
+
+
+long findGameIndex(long gameID){
+  for(long unsigned int i=0;i<games.size();i++){
+    if(games[i]->getGameID()==gameID){
+      return i;
+    }
+  }
+  return -1;
+}
+
+long genGameId(){
+  //bool exists = true;
+  long randId = random();
+  // while(exists){
+  //   exists = false;
+  //   randId = random();
+  //   for(int i=0; i<games.size();i++){
+  //     if(games[i]->getGameID()==randId)
+  //       exists = true;
+  //   }
+  // }
+  return randId;
+}
+
+long genUserId(){
+  //bool exists = true;
+  long randId = random();
+  // while(exists){
+  //   exists = false;
+  //   randId = random();
+  //   for(int i=0; i<activeUsers.size();i++){
+  //     if(activeUsers[i].userID==randId)
+  //       exists = true;
+  //   }
+  // }
+
+  return randId;
 }

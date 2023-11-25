@@ -30,7 +30,7 @@ class chess_game{
         int gameID;
 
     public:
-    chess_game(int gameID, bool newGame){
+    chess_game(long gameID, bool newGame){
         for(int i =0;i<8;i++){
             for(int j = 0;j<8;j++){
                 board[i][j] = nullptr;
@@ -99,10 +99,13 @@ class chess_game{
         return DrawBoard2(white,black,board);
     }
 
-    bool getIsEnd(){
+    int getIsEnd(){
         return IsEnd(&WhoMove,board,bw);
     }
 
+    long getGameID(){
+        return gameID;
+    }
     void PlaceFigures(figure **white, figure **black, figure* b[][8],bool NewGame){
         char pos[2];
         if(NewGame){
@@ -110,12 +113,12 @@ class chess_game{
                 pos[0] = 'A'+ i%8;
                 pos[1] = '2' - i/8;
                 white[i]->place(pos);
-                cout<<pos;
+                //cout<<pos;
                 b[pos[0]-'A'][pos[1]-'1'] = white[i];
                 pos[0] = 'A' + i%8;
                 pos[1] = '7' + i/8;
                 black[i]->place(pos);
-                cout<<""<<pos<<endl;
+                //cout<<""<<pos<<endl;
                 b[pos[0]-'A'][pos[1]-'1'] = black[i];
             }
         }
@@ -158,7 +161,7 @@ class chess_game{
             white[i]->place(line.c_str());
             if(!(line[2]-'0')) white[i]->remove();
             white[i]->sethasmoved(line[3]-'0');
-            cout<<line[3];
+            //cout<<line[3];
         }
         for(int i = 0;i<16;i++){
             getline(fin,line);
@@ -193,13 +196,13 @@ class chess_game{
 
         // Testing, if the player is trying to move an opponent's figure
         if((b[x1][y1]->getcolor()=='w'&&(*who)==0)||(b[x1][y1]->getcolor()=='b'&&(*who)==1)){
-            cout<<"Incorrect move - it is not your piece";
+            cout<<"Incorrect move - it is not your piece\n";
             return 0;
         }
 
         // Testing, if move is found in figure's AllMoves() result
         string allmoves = fig->AllMoves();
-        cout<<allmoves<<endl;
+        //cout<<allmoves<<endl;
         bool LegalMove = false;
         for(int i=0;i<(int)allmoves.length();i+=2){
             if(allmoves[0+i]==pos2[0]&&allmoves[1+i]==pos2[1]){
@@ -412,8 +415,9 @@ class chess_game{
     }
 
     // 0 - the game lasts
-    // 1 - the end
-    // 2 - the end, stalemate
+    // 1 - the end, draw
+    // 2 - the end, white wins
+    // 3 - the end. black wins
     int IsEnd(bool *who,figure* b[][8], figure** fbw[]){
         bool IsKingUnderAttack = false;
         bool IsDraw = true;
@@ -455,9 +459,10 @@ class chess_game{
             break;
         }
         
-        if(OnlyKings) return 2;
-        if(IsKingUnderAttack) return 1;
-        if(IsDraw) return 2;
+        if(IsKingUnderAttack&&!who) return 3;
+        if(IsKingUnderAttack&&who) return 2;
+        if(OnlyKings) return 1;
+        if(IsDraw) return 1;
         return 0;
     }
 
@@ -489,7 +494,7 @@ class chess_game{
         }
 
     void PawnPromotion(figure* fig,bool *who, figure** white, figure** black, figure* b[][8]){  
-        cout<<"Promotion. Choose figure ('R','H','B','Q'): ";
+        cout<<"Promotion. Choose figure ('R','H','B','Q'): \n";
         string choose;
         int i;
         for(i=0;i<16;i++){
@@ -506,7 +511,7 @@ class chess_game{
             case 'H': fig = new knight; break;
             case 'B': fig = new bishop; break;
             case 'Q': fig = new queen; break;
-            default: cout<<"Impossible case"<<endl;
+            default: cout<<"Impossible case\n"<<endl;
         }
         fig->setingame(true);
         fig->place(tpos);

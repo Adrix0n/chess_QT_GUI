@@ -43,10 +43,15 @@ int main(int argc, char ** argv){
   serverAddr.sin_port = htons(1100);
   serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
-    //Connect the socket to the server using the address
-    addr_size = sizeof serverAddr;
-    connect(clientSocket, (struct sockaddr *) &serverAddr, addr_size);
 
+  char user[255];
+  printf("Podaj swoja nazwe:\n");
+  scanf("%s",user);
+  printf("%s\n",user);
+  //Connect the socket to the server using the address
+  addr_size = sizeof serverAddr;
+  connect(clientSocket, (struct sockaddr *) &serverAddr, addr_size);
+  send(clientSocket,user,sizeof(user),0);
 
   pthread_t thread_id;
   if( pthread_create(&thread_id,NULL,clientThread,&clientSocket) != 0)

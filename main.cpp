@@ -11,7 +11,6 @@ int main(){
     string f;
     while(1){
         cout<<game.getBoard()<<endl;
-        
         cin>>f;
         game.MoveFigureString(f);
         if(game.getIsEnd()){

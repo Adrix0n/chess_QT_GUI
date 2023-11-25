@@ -47,7 +47,6 @@ int main(int argc, char ** argv){
   char user[255];
   printf("Podaj swoja nazwe:\n");
   scanf("%s",user);
-  printf("%s\n",user);
   //Connect the socket to the server using the address
   addr_size = sizeof serverAddr;
   connect(clientSocket, (struct sockaddr *) &serverAddr, addr_size);

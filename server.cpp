@@ -23,6 +23,7 @@ struct user{
   long userID;
   char userName[20];
   long gameID;
+  bool color; //0 - white, 1 - black
 }users;
 
 /*
@@ -36,7 +37,8 @@ struct user{
 long findGameIndex(long gameID);
 long genGameId();
 long genUserId();
-
+int findIdxOfActiveUserByID(long userID);
+int findIdxOfActiveUserByGameID(long gameID);
 std::vector < chess_game* > games;
 std::vector < user > activeUsers;
 
@@ -47,9 +49,10 @@ void * socketThread(void *arg)
   long *args = ((long *)arg);
   int newSocket1 = args[0];
   int newSocket2 = args[1];
-  int gameId = args[2];
+  long gameId = args[2];
+  long userId = args[3];
 
-  printf("ns1: %d. ns2: %d, gamid: %d\n",newSocket1,newSocket2,gameId);
+  printf("ns1: %d. ns2: %d, gamid: %ld\n",newSocket1,newSocket2,gameId);
   int n;
   char recvMessage[255];
   char endMessage[255];
@@ -61,8 +64,25 @@ void * socketThread(void *arg)
     n=recv(newSocket1,recvMessage,sizeof(recvMessage),0);
     printf("%s\n",recvMessage);
     // Obsługa błędów z recv();
-    if(n==0){
-      printf("Błąd! Odebrano 0 bajtów\n");
+    if(n==0){ // Rozłączono
+
+    activeUsers.erase(activeUsers.begin()+ findIdxOfActiveUserByID(userId));
+
+    // Do poprawy
+    // if(findIdxOfActiveUserByGameID(gameId)==-1){
+    //     games.erase(games.begin() + findGameIndex(gameId));
+    // }
+      
+      printf("Błąd! Odebrano 0 bajtów. Pozostali gracze\n");
+      for(long unsigned int i;i<activeUsers.size();i++){
+        printf("%s, ",activeUsers[i].userName);
+      }
+      printf("\n");
+       printf("Pozostale gry\n");
+      for(long unsigned int i;i<games.size();i++){
+        printf("%ld, ",games[i]->getGameID());
+      }
+      printf("\n");
       break;
     }
     if(n==-1){
@@ -197,17 +217,19 @@ int main(){
         if(notPairedClients==2){
           long gameId = genGameId();
           games.push_back(new chess_game(gameId,true));
-          long socketArray1[3] = {newSocket1,newSocket2,gameId};
-          long socketArray2[3] = {newSocket2,newSocket1,gameId};
+          long socketArray1[4] = {newSocket1,newSocket2,gameId,userId1};
+          long socketArray2[4] = {newSocket2,newSocket1,gameId,userId2};
           user user1, user2;
 
           user1.userID=userId1;
           strcpy(user1.userName,userName1);
           user1.gameID = gameId;
+          user1.color = 0;
 
           user2.userID=userId2;
           strcpy(user2.userName,userName2);
           user2.gameID = gameId;
+          user2.color = 1;
 
           activeUsers.push_back(user1);
           activeUsers.push_back(user2);
@@ -266,4 +288,20 @@ long genUserId(){
   // }
 
   return randId;
+}
+
+int findIdxOfActiveUserByID(long userID){
+  for(long unsigned int i=0;i<activeUsers.size();i++){
+    if(activeUsers[i].userID==userID)
+      return i;
+  }
+  return -1;
+}
+
+int findIdxOfActiveUserByGameID(long gameID){
+  for(long unsigned int i=0;i<activeUsers.size();i++){
+    if(activeUsers[i].gameID==gameID)
+      return i;
+  }
+  return -1;
 }

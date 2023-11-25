@@ -459,8 +459,8 @@ class chess_game{
             break;
         }
         
-        if(IsKingUnderAttack&&!who) return 3;
-        if(IsKingUnderAttack&&who) return 2;
+        if(IsKingUnderAttack&&who) return 3;
+        if(IsKingUnderAttack&&!who) return 2;
         if(OnlyKings) return 1;
         if(IsDraw) return 1;
         return 0;

@@ -74,6 +74,16 @@ class chess_game{
         }
     }
 
+
+    ~chess_game(){
+        for(int i=0;i<16;i++){
+            delete white[i];
+            delete black[i];
+        }
+        delete white;
+        delete black;
+    }
+
     bool getWhoMove(){
         return WhoMove;
     }

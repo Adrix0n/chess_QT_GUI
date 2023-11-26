@@ -32,6 +32,7 @@ struct user{
     - poprawić odnośniki do odpowiednich gier w wątku, aby nie odnosił się do gry o indeksie gameId, gdyż liczba gier w wektorze może się zmniejszyć (poprawione, 
       ale należy dodać jeszcze mutexa, bo istnieje sytuacja, gdzie funkcja findgameid się wykonuje, a w tym czasie główny wątek usuwa gry)
     - Napisać obsługę zakończenia gry (usuwanie, przekazywanie odpowiedniej wiadomości zwrotnej)
+    - Dopisać destruktor do chess_game :), aby poprawnie wszystko usuwał
 */
 
 long findGameIndex(long gameID);
@@ -59,30 +60,41 @@ void * socketThread(void *arg)
 
   int gameIdx = findGameIndex(gameId);
   chess_game *game = games[gameIdx];
+  int useridx = findIdxOfActiveUserByID(userId);
+  //struct user *player = &activeUsers[useridx]; 
 
   while(1){
     n=recv(newSocket1,recvMessage,sizeof(recvMessage),0);
     printf("%s\n",recvMessage);
     // Obsługa błędów z recv();
+
     if(n==0){ // Rozłączono
 
+    // Nie wiem czy potrzebne
+    close(newSocket1);
+    close(newSocket2);
+
+    //printf("userIdx: %d\n",findIdxOfActiveUserByID(userId));
     activeUsers.erase(activeUsers.begin()+ findIdxOfActiveUserByID(userId));
 
-    // Do poprawy
-    // if(findIdxOfActiveUserByGameID(gameId)==-1){
-    //     games.erase(games.begin() + findGameIndex(gameId));
-    // }
+    if(findIdxOfActiveUserByGameID(gameId)==-1){
+        delete game;
+        games.erase(games.begin()+findGameIndex(gameId));
+    }
       
+      // tests
       printf("Błąd! Odebrano 0 bajtów. Pozostali gracze\n");
-      for(long unsigned int i;i<activeUsers.size();i++){
-        printf("%s, ",activeUsers[i].userName);
+      for(long unsigned int i=0;i<activeUsers.size();i++){
+        printf("%s, userID:%ld, gameID:%ld \n",activeUsers[i].userName,activeUsers[i].userID,activeUsers[i].gameID);
       }
       printf("\n");
        printf("Pozostale gry\n");
-      for(long unsigned int i;i<games.size();i++){
+      for(long unsigned int i=0;i<games.size();i++){
         printf("%ld, ",games[i]->getGameID());
       }
       printf("\n");
+
+
       break;
     }
     if(n==-1){
@@ -93,6 +105,7 @@ void * socketThread(void *arg)
     std::string playerMove(recvMessage);
 
     bool validMove = game->MoveFigureString(playerMove);
+
     if(validMove){
       int n1,n2;
       printf("\n%s\n",game->getBoard().c_str());
@@ -138,13 +151,28 @@ void * socketThread(void *arg)
         break;
       }
     }
+    if(game->getIsEnd()!=0){
+      // Usuwanie gry i użytkowników
 
+      // Nie wiem czy potrzebne
+      close(newSocket1);
+      close(newSocket2);
 
+      //printf("userIdx: %d\n",findIdxOfActiveUserByID(userId));
 
+      /// Chyba nie zwalnia pamięci
+      activeUsers.erase(activeUsers.begin()+ findIdxOfActiveUserByID(userId));
+
+      if(findIdxOfActiveUserByGameID(gameId)==-1){
+        delete game;
+        games.erase(games.begin()+findGameIndex(gameId));
+      }
+      break;
+    }
   }
 
 
-    memset(&recvMessage, 0, sizeof (recvMessage));
+  memset(&recvMessage, 0, sizeof (recvMessage));
 
   
   pthread_exit(NULL);

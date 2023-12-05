@@ -22,8 +22,6 @@ void * clientThread(void *arg)
       }
       bzero(sentMessage,sizeof(sentMessage));
     }
-
-
     pthread_exit(NULL);
 }
 

@@ -505,7 +505,7 @@ class chess_game{
 
     void PawnPromotion(figure* fig,bool *who, figure** white, figure** black, figure* b[][8]){  
         cout<<"Promotion. Choose figure ('R','H','B','Q'): \n";
-        string choose;
+        char choose = 'Q';
         int i;
         for(i=0;i<16;i++){
             if((white[i]->getpos()==fig->getpos())||(black[i]->getpos()==fig->getpos()))
@@ -513,10 +513,10 @@ class chess_game{
         }
         
         char* tpos = fig->getpos();
-        do{
-            cin>>choose;
-        }while(choose[0]!='R'&&choose[0]!='H'&&choose[0]!='B'&&choose[0]!='Q');
-        switch(choose[0]){
+        // do{
+        //     cin>>choose;
+        // }while(choose[0]!='R'&&choose[0]!='H'&&choose[0]!='B'&&choose[0]!='Q');
+        switch(choose){
             case 'R': fig = new rook; break;
             case 'H': fig = new knight; break;
             case 'B': fig = new bishop; break;

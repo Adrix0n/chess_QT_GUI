@@ -39,7 +39,9 @@ struct user{
     - poprawić odnośniki do odpowiednich gier w wątku, aby nie odnosił się do gry o indeksie gameId, gdyż liczba gier w wektorze może się zmniejszyć (poprawione, 
       ale należy dodać jeszcze mutexa, bo istnieje sytuacja, gdzie funkcja findgameid się wykonuje, a w tym czasie główny wątek usuwa gry)
     - Napisać obsługę zakończenia gry (usuwanie, przekazywanie odpowiedniej wiadomości zwrotnej)
-    - Dopisać destruktor do chess_game :), aby poprawnie wszystko usuwał
+    - Dopisać destruktor do chess_game :), aby poprawnie wszystko usuwał (chyba jest)
+    - Ogarnąć pozostałe komunikaty z serwera do klienta i z klienta do serwera 
+      (promocja figury, rozłączenie gracza)
 */
 
 long findGameIndex(long gameID);
@@ -76,6 +78,12 @@ void * socketThread(void *arg)
     // Obsługa błędów z recv();
 
     if(n==0){ // Rozłączono
+    // wiadomość do drugiego gracza
+    endMessage[0] = 'X'; endMessage[1] = 'D';endMessage[2] = '2'; endMessage[3] = '\0';
+    n = send(newSocket2,endMessage,sizeof(endMessage),0);
+    if(n==0||n==-1){
+        printf("Błąd wysyłania disconnect msg\n");
+      }
 
     // Nie wiem czy potrzebne
     close(newSocket1);

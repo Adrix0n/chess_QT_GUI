@@ -42,6 +42,8 @@ struct user{
     - Dopisać destruktor do chess_game :), aby poprawnie wszystko usuwał (chyba jest)
     - Ogarnąć pozostałe komunikaty z serwera do klienta i z klienta do serwera 
       (promocja figury, rozłączenie gracza)
+
+    - ogarnąć błąd recv()==-1 (pojawia się, gdy jeden gracz się rozłączy a drugi wyda polecenie)
 */
 
 long findGameIndex(long gameID);
@@ -70,7 +72,15 @@ void * socketThread(void *arg)
   int gameIdx = findGameIndex(gameId);
   chess_game *game = games[gameIdx];
   int useridx = findIdxOfActiveUserByID(userId);
-  struct user *player = &activeUsers[useridx]; 
+  struct user *player = &activeUsers[useridx];
+
+  int n4,n5;
+  //printf("\n%s\n",game->getBoard().c_str());
+  n4 = send(newSocket2,game->getBoard().c_str(),sizeof(recvMessage),0);
+  n5 = send(newSocket1,game->getBoard().c_str(),sizeof(recvMessage),0);
+  if(n4==0||n4==-1||n5==0||n5==-1){
+    printf("Błąd wysyłania\n");
+  }
 
   while(1){
     n=recv(newSocket1,recvMessage,sizeof(recvMessage),0);

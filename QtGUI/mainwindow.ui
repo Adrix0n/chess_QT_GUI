@@ -2385,6 +2385,67 @@ QPushButton:checked{
      </property>
     </widget>
    </widget>
+   <widget class="QGroupBox" name="endBox">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>180</y>
+      <width>300</width>
+      <height>161</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QGroupBox{
+	background-color: #DDDDDD;
+	border: 1px solid gray;
+}
+</string>
+    </property>
+    <property name="title">
+     <string>Koniec</string>
+    </property>
+    <widget class="QLabel" name="endLabel">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>40</y>
+       <width>301</width>
+       <height>40</height>
+      </rect>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>Koniec!</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="wordWrap">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="newGameButton">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>100</y>
+       <width>89</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Nowa gra</string>
+     </property>
+    </widget>
+   </widget>
    <zorder>tileA8</zorder>
    <zorder>tileB8</zorder>
    <zorder>tileC8</zorder>
@@ -2450,6 +2511,7 @@ QPushButton:checked{
    <zorder>tileA1</zorder>
    <zorder>tileE5</zorder>
    <zorder>groupBox</zorder>
+   <zorder>endBox</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

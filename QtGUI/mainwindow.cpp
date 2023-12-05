@@ -8,13 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->setupUi(this);
     TCPSocket = new QTcpSocket();
-    TCPSocket->connectToHost("127.0.0.1",1100);
-    connect(TCPSocket,SIGNAL(readyRead()),this,SLOT(readDataFromServer()));
-    TCPSocket->open(QIODevice::ReadWrite);
-    if (TCPSocket->isOpen())
-    {
 
-    }
 
     tiles[0] = ui->tileA8;
     tiles[8] = ui->tileA7;
@@ -91,11 +85,15 @@ MainWindow::MainWindow(QWidget *parent)
 
     for(int i=0;i<64;i++){
         connect(tiles[i],SIGNAL(toggled(bool)),this,SLOT (buttonToggled(bool)));
+        tiles[i]->setCheckable(false);
     }
 
+    ui->endBox->hide();
 
+    connect(TCPSocket,SIGNAL(readyRead()),this,SLOT(readDataFromServer()));
     ui->gameModeRadio->setChecked(true);
     connect(ui->connectButton,SIGNAL(clicked(bool)),this,SLOT(connectButtonToggled(bool)));
+    connect(ui->newGameButton,SIGNAL(clicked()),this,SLOT(newGameButtonClicked()));
 }
 
 MainWindow::~MainWindow()
@@ -151,16 +149,21 @@ void MainWindow::buttonToggled(bool checked){
         MainWindow::unToggleAll();
         toggledButtonsCounter=0;
     }
-
-
 }
 
 bool MainWindow::connectButtonToggled(bool checked)
 {
+    TCPSocket->connectToHost("127.0.0.1",1100);
+    TCPSocket->open(QIODevice::ReadWrite);
+
+    if(!TCPSocket->waitForConnected()){
+        TCPSocket->close();
+        return false;
+    }
+
     QString nickname = ui->nicknameEdit->text();
     if(nickname.length()<3)
         return false;
-
 
     char gamemode[1];
     if(ui->gameModeRadio->isChecked())
@@ -173,8 +176,6 @@ bool MainWindow::connectButtonToggled(bool checked)
 
     char sendMsg[255];
     strcpy(sendMsg,nickname.toStdString().c_str());
-
-
     TCPSocket->write(sendMsg,sizeof(sendMsg));
 
     bzero(sendMsg,sizeof(sendMsg));
@@ -191,8 +192,21 @@ bool MainWindow::connectButtonToggled(bool checked)
     }
 
     ui->groupBox->hide();
-
+    for(int i=0;i<64;i++){
+        tiles[i]->setCheckable(true);
+    }
     return true;
+}
+
+void MainWindow::newGameButtonClicked()
+{
+    TCPSocket->abort();
+    ui->endBox->hide();
+
+    ui->groupBox->show();
+    for(int i=0;i<64;i++){
+        tiles[i]->setCheckable(false);
+    }
 }
 
 
@@ -281,12 +295,33 @@ void MainWindow::setButtonsNames(QString board){
 
 void MainWindow::readDataFromServer()
 {
+    // Specjalne wiadomości od serwera:
+    //XE1 - remis
+    //XE2 - biale wygraly
+    //XE3 - czarne wygraly
+    //XD2 -
     if(TCPSocket){
         if(TCPSocket->isOpen()){
             QByteArray recvMessage = TCPSocket->readAll();
                 //String message = recvMessage.toStdString;
+            if(recvMessage[0]!='X')
                 setButtonsNames(recvMessage);
-
+            else{
+                ui->endBox->show();
+                if(recvMessage[1]=='E'){
+                    if(recvMessage[2]=='1'){
+                        ui->endLabel->setText("Koniec gry, remis!");
+                    }
+                    if(recvMessage[2]=='2'){
+                        ui->endLabel->setText("Koniec gry, białe wygrały!");
+                    }
+                    if(recvMessage[2]=='3'){
+                        ui->endLabel->setText("Koniec gry, czarne wygrały!");
+                    }
+                }else if(recvMessage[1]=='D'){
+                    ui->endLabel->setText("Przeciwnik porzucił grę, wygrałeś!");
+                }
+            }
         }
     }
 }

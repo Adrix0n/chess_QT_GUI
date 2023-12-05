@@ -32,6 +32,7 @@ private slots:
     void unToggleAll();
     void buttonToggled(bool checked);
     bool connectButtonToggled(bool checked);
+    void newGameButtonClicked();
     void setButtonsNames(QString board);
     void readDataFromServer();
 private:

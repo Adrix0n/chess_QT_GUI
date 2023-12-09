@@ -13,6 +13,8 @@
 #include <vector>
 #include <time.h>
 
+#include <mutex>
+
 #define MESSAGE_SIZE 255
 
 char client_message[255];
@@ -26,11 +28,6 @@ struct user{
   bool color; //0 - white, 1 - black
 }users;
 
-/*
-    TODO:
-    - ogarnąć błąd recv()==-1 (pojawia się, gdy jeden gracz się rozłączy a drugi wyda polecenie)
-*/
-
 long findGameIndex(long gameID);
 long genGameId();
 long genUserId();
@@ -40,6 +37,10 @@ int findIdxOfActiveUserByName(char nickname[20]);
 std::vector < chess_game* > games;
 std::vector < user > activeUsers;
 std::vector < user > ownLobbyUsers;
+
+
+std::mutex gamesMutex;
+std::mutex activeUsersMutex;
 
 void * socketThread(void *arg)
 {
@@ -54,10 +55,14 @@ void * socketThread(void *arg)
   char recvMessage[255];
   char endMessage[255];
 
-  int gameIdx = findGameIndex(gameId);
+  gamesMutex.lock();
+  int gameIdx = findGameIndex(gameId); //mutex
   chess_game *game = games[gameIdx];
-  int useridx = findIdxOfActiveUserByID(userId);
+  gamesMutex.unlock();
+  activeUsersMutex.lock();
+  int useridx = findIdxOfActiveUserByID(userId); //mutex
   struct user *player = &activeUsers[useridx];
+  activeUsersMutex.unlock();
 
   int n4,n5;
   //printf("\n%s\n",game->getBoard().c_str());
@@ -69,7 +74,7 @@ void * socketThread(void *arg)
 
   while(1){
     n=recv(newSocket1,recvMessage,sizeof(recvMessage),0);
-    printf("%s\n",recvMessage);
+    //printf("%s\n",recvMessage);
     // Obsługa błędów z recv();
 
     if(n==0){ // Rozłączono
@@ -85,12 +90,17 @@ void * socketThread(void *arg)
     close(newSocket2);
 
     //printf("userIdx: %d\n",findIdxOfActiveUserByID(userId));
-    activeUsers.erase(activeUsers.begin()+ findIdxOfActiveUserByID(userId));
+    activeUsersMutex.lock();
+    activeUsers.erase(activeUsers.begin()+ findIdxOfActiveUserByID(userId)); //mutex
+    activeUsersMutex.unlock();
 
-    if(findIdxOfActiveUserByGameID(gameId)==-1){
+    // Not sure, if activeUsersMutes is necessery
+    gamesMutex.lock();
+    if(findIdxOfActiveUserByGameID(gameId)==-1){ //mutex
         delete game;
         games.erase(games.begin()+findGameIndex(gameId));
     }
+    gamesMutex.unlock();
       
       // // tests
       // printf("Błąd! Odebrano 0 bajtów. Pozostali gracze\n");
@@ -122,10 +132,10 @@ void * socketThread(void *arg)
     
     if(validMove){
       int n1,n2;
-      printf("\n%s\n",game->getBoard().c_str());
+      //printf("\n%s\n",game->getBoard().c_str());
       n1 = send(newSocket2,game->getBoard().c_str(),sizeof(recvMessage),0);
       n2 = send(newSocket1,game->getBoard().c_str(),sizeof(recvMessage),0);
-      printf("n1:%d n2:%d\n",n1,n2);
+      //printf("n1:%d n2:%d\n",n1,n2);
       if(n1==0||n1==-1||n2==0||n2==-1){
         printf("Błąd wysyłania\n");
         break;
@@ -173,12 +183,16 @@ void * socketThread(void *arg)
 
       //printf("userIdx: %d\n",findIdxOfActiveUserByID(userId));
 
-      activeUsers.erase(activeUsers.begin()+ findIdxOfActiveUserByID(userId));
+      activeUsersMutex.lock();
+      activeUsers.erase(activeUsers.begin()+ findIdxOfActiveUserByID(userId)); //mutex
+      activeUsersMutex.unlock();
 
-      if(findIdxOfActiveUserByGameID(gameId)==-1){
+      gamesMutex.lock();
+      if(findIdxOfActiveUserByGameID(gameId)==-1){ //mutex
         delete game;
         games.erase(games.begin()+findGameIndex(gameId));
       }
+      gamesMutex.unlock();
       break;
     }
   }
@@ -309,7 +323,9 @@ int main(){
             nickname[i]=client_message[i];
           }
 
-          int useridx = findIdxOfActiveUserByName(nickname);
+          activeUsersMutex.lock();
+          int useridx = findIdxOfActiveUserByName(nickname); //mutex
+          activeUsersMutex.unlock();
           if(useridx ==-1){
             printf("Nie znaleziono takiego gracza\n");
           }else{

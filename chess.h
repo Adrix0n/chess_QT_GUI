@@ -304,7 +304,7 @@ class chess_game{
         }
 
         // Testing, if the king is save after the move
-        cout<<"Legal move:"<<pos1<<" "<<pos2<<endl;
+        //cout<<"Legal move:"<<pos1<<" "<<pos2<<endl;
         LegalMove = IsKingSave(fig,pos2,who,b,fbw);
     
         if(!LegalMove){
@@ -410,15 +410,15 @@ class chess_game{
         // Checking if the king is reachable after move
             for(int i =0;i<16;i++){
                 result = CanReach(fbw[!(*who)][i],fbw[*who][12]->getpos(),b);
-                cout<<endl<<fbw[!(*who)][i]->getname()<<result;
+                //cout<<endl<<fbw[!(*who)][i]->getname()<<result;
                 if(fbw[!(*who)][i]->getname()=='P'&&(fbw[!(*who)][i]->getpos())[0]==pos2[0]){
                     result = false;
-                    cout<<result;
+                    //cout<<result;
                     continue;
                 }
                 if(fbw[!(*who)][i]->getname()=='P'&&(fbw[!(*who)][i]->getpos())[0]==(fbw[*who][12]->getpos())[0]){
                     result = false;
-                    cout<<result;
+                    //cout<<result;
                     continue;
                 }
                 if(result)

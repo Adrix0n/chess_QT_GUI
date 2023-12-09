@@ -304,6 +304,7 @@ class chess_game{
         }
 
         // Testing, if the king is save after the move
+        cout<<"Legal move:"<<pos1<<" "<<pos2<<endl;
         LegalMove = IsKingSave(fig,pos2,who,b,fbw);
     
         if(!LegalMove){
@@ -328,7 +329,8 @@ class chess_game{
 
         // En passant
         char color = fig->getcolor()=='w' ? 'b' : 'w';
-        if(fig->getname()=='P'&&b[x2][y1]!=nullptr&&b[x2][y1]->getname()=='P'&&b[x2][y1]->getcolor()==color&&b[x2][y1]->getprevioushasmovedstate()==false){
+        bool correctRow = (y1==3||y1==4)? true : false;
+        if(fig->getname()=='P'&&b[x2][y1]!=nullptr&&b[x2][y1]->getname()=='P'&&b[x2][y1]->getcolor()==color&&b[x2][y1]->getprevioushasmovedstate()==false&&correctRow){
             b[x2][y1]->setingame(false);
             b[x2][y1]=nullptr;
         }
@@ -378,9 +380,11 @@ class chess_game{
         int x1 = pos1[0]-'A', x2 = pos2[0]-'A', y1 = pos1[1]-'1', y2 = pos2[1]-'1';
         int a1 = x1-x2==0 ? 0 : 1;
         int a2 = y1-y2==0 ? 0 : 1;
+        a1 *= x1-x2<0 ? 1 : -1;
+        a2 *= y1-y2<0 ? 1 : -1;
             for(int i=1;i<max(abs(x1-x2),abs(y1-y2));i++){
                 if(fig->getname()=='H') break;
-                if(b[min(x1,x2)+i*a1][min(y1,y2)+i*a2]!=nullptr){
+                if(b[x1+i*a1][y1+i*a2]!=nullptr){
                     LegalMove = false;
                     break;
                 }
@@ -394,6 +398,7 @@ class chess_game{
         string pos1 = {tpos1[0],tpos1[1]};
         int x1 = pos1[0]-'A', x2 = pos2[0]-'A', y1 = pos1[1]-'1', y2 = pos2[1]-'1';
 
+
         // Move simulation
         if(b[x2][y2]!=nullptr)
             b[x2][y2]->setingame(false);
@@ -405,10 +410,15 @@ class chess_game{
         // Checking if the king is reachable after move
             for(int i =0;i<16;i++){
                 result = CanReach(fbw[!(*who)][i],fbw[*who][12]->getpos(),b);
+                cout<<endl<<fbw[!(*who)][i]->getname()<<result;
                 if(fbw[!(*who)][i]->getname()=='P'&&(fbw[!(*who)][i]->getpos())[0]==pos2[0]){
+                    result = false;
+                    cout<<result;
                     continue;
                 }
                 if(fbw[!(*who)][i]->getname()=='P'&&(fbw[!(*who)][i]->getpos())[0]==(fbw[*who][12]->getpos())[0]){
+                    result = false;
+                    cout<<result;
                     continue;
                 }
                 if(result)
@@ -476,6 +486,7 @@ class chess_game{
         return 0;
     }
 
+    // Still does not works properly, 
     bool PawnMoveAdditionalCondition(figure* fig,char* pos2, figure *b[][8]){
             bool LegalMove = true;
             char* pos1 = fig->getpos();

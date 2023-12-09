@@ -15,13 +15,6 @@
 
 #define MESSAGE_SIZE 255
 
-struct ipcMessage{
-  long receiver;
-  long userID;
-}msg;
-
-//gcc program.c -lpthread -Wall -o outfile Remember to link pthread lib
-
 char client_message[255];
 //char buffer[256];
 
@@ -34,15 +27,7 @@ struct user{
 }users;
 
 /*
-  TODO:
-    - Napisać obsługę rozłączenia klienta od serwera
-    - poprawić odnośniki do odpowiednich gier w wątku, aby nie odnosił się do gry o indeksie gameId, gdyż liczba gier w wektorze może się zmniejszyć (poprawione, 
-      ale należy dodać jeszcze mutexa, bo istnieje sytuacja, gdzie funkcja findgameid się wykonuje, a w tym czasie główny wątek usuwa gry)
-    - Napisać obsługę zakończenia gry (usuwanie, przekazywanie odpowiedniej wiadomości zwrotnej)
-    - Dopisać destruktor do chess_game :), aby poprawnie wszystko usuwał (chyba jest)
-    - Ogarnąć pozostałe komunikaty z serwera do klienta i z klienta do serwera 
-      (promocja figury, rozłączenie gracza)
-
+    TODO:
     - ogarnąć błąd recv()==-1 (pojawia się, gdy jeden gracz się rozłączy a drugi wyda polecenie)
 */
 
@@ -64,7 +49,7 @@ void * socketThread(void *arg)
   long gameId = args[2];
   long userId = args[3];
 
-  printf("ns1: %d. ns2: %d, gamid: %ld\n",newSocket1,newSocket2,gameId);
+  //printf("ns1: %d. ns2: %d, gamid: %ld\n",newSocket1,newSocket2,gameId);
   int n;
   char recvMessage[255];
   char endMessage[255];
@@ -107,25 +92,26 @@ void * socketThread(void *arg)
         games.erase(games.begin()+findGameIndex(gameId));
     }
       
-      // tests
-      printf("Błąd! Odebrano 0 bajtów. Pozostali gracze\n");
-      for(long unsigned int i=0;i<activeUsers.size();i++){
-        printf("%s, userID:%ld, gameID:%ld \n",activeUsers[i].userName,activeUsers[i].userID,activeUsers[i].gameID);
-      }
-       printf("Pozostale gry\n");
-      for(long unsigned int i=0;i<games.size();i++){
-        printf("%ld, ",games[i]->getGameID());
-      }
-      printf("\n");
+      // // tests
+      // printf("Błąd! Odebrano 0 bajtów. Pozostali gracze\n");
+      // for(long unsigned int i=0;i<activeUsers.size();i++){
+      //   printf("%s, userID:%ld, gameID:%ld \n",activeUsers[i].userName,activeUsers[i].userID,activeUsers[i].gameID);
+      // }
+      //  printf("Pozostale gry\n");
+      // for(long unsigned int i=0;i<games.size();i++){
+      //   printf("%ld, ",games[i]->getGameID());
+      // }
+      // printf("\n");
 
 
       break;
     }
     if(n==-1){
+      //TODO obsługa
       printf("Błąd recv()==-1\n");
     }
 
-    
+
     std::string playerMove(recvMessage);
 
     bool validMove = 0;
@@ -182,13 +168,11 @@ void * socketThread(void *arg)
     if(game->getIsEnd()!=0){
       // Usuwanie gry i użytkowników
 
-      // Nie wiem czy potrzebne
       close(newSocket1);
       close(newSocket2);
 
       //printf("userIdx: %d\n",findIdxOfActiveUserByID(userId));
 
-      /// Chyba nie zwalnia pamięci (może jednak zwalnia bo delete player plus to niżej zamyka program)
       activeUsers.erase(activeUsers.begin()+ findIdxOfActiveUserByID(userId));
 
       if(findIdxOfActiveUserByGameID(gameId)==-1){
@@ -215,7 +199,7 @@ int main(){
   struct sockaddr_storage serverStorage;
   socklen_t addr_size;
 
-  //Create the socket. 
+  // Create socket
   serverSocket = socket(AF_INET,SOCK_STREAM,0);
   serverAddr.sin_family = AF_INET;
   serverAddr.sin_port = htons(1100);
@@ -224,7 +208,7 @@ int main(){
   if (setsockopt(serverSocket, SOL_SOCKET, SO_REUSEADDR, &valuevalue, sizeof(int)) < 0)
     perror("setsockopt(SO_REUSEADDR) failed");
 
-  //Bind the address struct to the socket 
+  // Bind socket
   bind(serverSocket, (struct sockaddr *) &serverAddr, sizeof(serverAddr));
 
   if(listen(serverSocket,10)==0){
@@ -268,8 +252,8 @@ int main(){
           if(notPairedClients==2){
             long gameId = genGameId();
             games.push_back(new chess_game(gameId,true));
-            long socketArray1[4] = {newSockets[0],newSockets[1],gameId,userIds[0]};
-            long socketArray2[4] = {newSockets[1],newSockets[0],gameId,userIds[1]};
+            long threadParams1[4] = {newSockets[0],newSockets[1],gameId,userIds[0]};
+            long threadParams2[4] = {newSockets[1],newSockets[0],gameId,userIds[1]};
             user user1, user2;
 
             user1.userID=userIds[0];
@@ -285,10 +269,10 @@ int main(){
             activeUsers.push_back(user1);
             activeUsers.push_back(user2);
 
-            if( pthread_create(&thread_id1,NULL,socketThread,&socketArray1) != 0 )
+            if( pthread_create(&thread_id1,NULL,socketThread,&threadParams1) != 0 )
             printf("Failed to create thread\n");
 
-            if( pthread_create(&thread_id2,NULL,socketThread,&socketArray2) != 0 )
+            if( pthread_create(&thread_id2,NULL,socketThread,&threadParams2) != 0 )
             printf("Failed to create thread\n");
 
             pthread_detach(thread_id1);
@@ -339,13 +323,13 @@ int main(){
             user2.userSocket = newSockets[notPairedClients];
 
 
-            long socketArray1[4] = {user2.userSocket,user1.userSocket,user2.gameID,user2.userID};
-            long socketArray2[4] = {user1.userSocket,user2.userSocket,user2.gameID,user1.userID};
+            long threadParams1[4] = {user2.userSocket,user1.userSocket,user2.gameID,user2.userID};
+            long threadParams2[4] = {user1.userSocket,user2.userSocket,user2.gameID,user1.userID};
 
-            if( pthread_create(&thread_id1,NULL,socketThread,&socketArray1) != 0 )
+            if( pthread_create(&thread_id1,NULL,socketThread,&threadParams1) != 0 )
              printf("Failed to create thread\n");
 
-            if( pthread_create(&thread_id2,NULL,socketThread,&socketArray2) != 0 )
+            if( pthread_create(&thread_id2,NULL,socketThread,&threadParams2) != 0 )
              printf("Failed to create thread\n");
 
             pthread_detach(thread_id1);
@@ -377,31 +361,12 @@ long findGameIndex(long gameID){
 }
 
 long genGameId(){
-  //bool exists = true;
   long randId = random();
-  // while(exists){
-  //   exists = false;
-  //   randId = random();
-  //   for(int i=0; i<games.size();i++){
-  //     if(games[i]->getGameID()==randId)
-  //       exists = true;
-  //   }
-  // }
   return randId;
 }
 
 long genUserId(){
-  //bool exists = true;
   long randId = random();
-  // while(exists){
-  //   exists = false;
-  //   randId = random();
-  //   for(int i=0; i<activeUsers.size();i++){
-  //     if(activeUsers[i].userID==randId)
-  //       exists = true;
-  //   }
-  // }
-
   return randId;
 }
 

@@ -166,9 +166,11 @@ class pawn: public figure{
             string toadd = "";
 
             int j;
-            j = color=='b'? -1 : 1;
-            j *= HasMoved? 1 : 2;
             for(int i = -1; i<2;i++){
+                j = color=='b'? -1 : 1;
+                if(i==0){
+                    j *= HasMoved? 1 : 2;
+                }
                 for(int k = j;k!=0;k/=2){
                     toadd = pos[0] + i;
                     toadd += pos[1] + k;

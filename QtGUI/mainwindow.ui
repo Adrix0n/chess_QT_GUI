@@ -25,7 +25,8 @@
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -60,7 +61,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -95,7 +97,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -130,7 +133,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -165,7 +169,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -200,7 +205,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -235,7 +241,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -270,7 +277,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -305,7 +313,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -340,7 +349,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -375,7 +385,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -410,7 +421,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -445,7 +457,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -480,7 +493,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -515,7 +529,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -550,7 +565,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -585,7 +601,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -620,7 +637,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -655,7 +673,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -690,7 +709,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -725,7 +745,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -760,7 +781,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -795,7 +817,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -830,7 +853,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -865,7 +889,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -900,7 +925,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -935,7 +961,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -970,7 +997,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1005,7 +1033,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1040,7 +1069,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1075,7 +1105,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1110,7 +1141,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1145,7 +1177,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1180,7 +1213,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1215,7 +1249,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1250,7 +1285,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1285,7 +1321,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1320,7 +1357,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1355,7 +1393,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1390,7 +1429,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1425,7 +1465,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1460,7 +1501,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1495,7 +1537,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1530,7 +1573,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1565,7 +1609,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1600,7 +1645,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1635,7 +1681,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1670,7 +1717,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1705,7 +1753,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1740,7 +1789,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1775,7 +1825,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1810,7 +1861,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1845,7 +1897,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1880,7 +1933,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1915,7 +1969,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1950,7 +2005,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1988,7 +2044,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -2029,7 +2086,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -2064,7 +2122,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -2099,7 +2158,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -2134,7 +2194,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -2169,7 +2230,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -2204,7 +2266,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -2239,7 +2302,8 @@ QPushButton:checked{
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>FreeSerif</family>
+      <pointsize>70</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -2335,7 +2399,7 @@ QPushButton:checked{
       </rect>
      </property>
      <property name="text">
-      <string>Losowa gra</string>
+      <string>Random game</string>
      </property>
     </widget>
     <widget class="QRadioButton" name="gameModeRadio_2">
@@ -2348,7 +2412,7 @@ QPushButton:checked{
       </rect>
      </property>
      <property name="text">
-      <string>Stwórz grę</string>
+      <string>Create game</string>
      </property>
     </widget>
     <widget class="QRadioButton" name="gameModeRadio_3">
@@ -2361,7 +2425,7 @@ QPushButton:checked{
       </rect>
      </property>
      <property name="text">
-      <string>Dołącz do gry</string>
+      <string>Join game</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="nicknameEdit">
@@ -2402,7 +2466,7 @@ QPushButton:checked{
 </string>
     </property>
     <property name="title">
-     <string>Koniec</string>
+     <string/>
     </property>
     <widget class="QLabel" name="endLabel">
      <property name="enabled">
@@ -2442,9 +2506,32 @@ QPushButton:checked{
       </rect>
      </property>
      <property name="text">
-      <string>Nowa gra</string>
+      <string>New game</string>
      </property>
     </widget>
+   </widget>
+   <widget class="QLabel" name="waitingLabel">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>250</y>
+      <width>270</width>
+      <height>120</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel{
+	background-color: #DDDDDD;
+	border: 1px solid gray;
+}
+</string>
+    </property>
+    <property name="text">
+     <string>Waiting for other player ...</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
    </widget>
    <zorder>tileA8</zorder>
    <zorder>tileB8</zorder>
@@ -2512,6 +2599,7 @@ QPushButton:checked{
    <zorder>tileE5</zorder>
    <zorder>groupBox</zorder>
    <zorder>endBox</zorder>
+   <zorder>waitingLabel</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

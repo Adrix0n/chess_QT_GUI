@@ -89,6 +89,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     ui->endBox->hide();
+    ui->waitingLabel->hide();
 
     connect(TCPSocket,SIGNAL(readyRead()),this,SLOT(readDataFromServer()));
     ui->gameModeRadio->setChecked(true);
@@ -136,7 +137,6 @@ void MainWindow::buttonToggled(bool checked){
     if(toggledButtonsCounter==2){
         choosenTile2[0] = btnName[4].toLatin1();
         choosenTile2[1] = btnName[5].toLatin1();
-        //TODO: Wysłanie wiadomości do serwera
         char sendMsg[255];
         sendMsg[0] = choosenTile1[0];
         sendMsg[1] = choosenTile1[1];
@@ -192,6 +192,7 @@ bool MainWindow::connectButtonToggled(bool checked)
     }
 
     ui->groupBox->hide();
+    ui->waitingLabel->show();
     for(int i=0;i<64;i++){
         tiles[i]->setCheckable(true);
     }
@@ -207,6 +208,7 @@ void MainWindow::newGameButtonClicked()
     for(int i=0;i<64;i++){
         tiles[i]->setCheckable(false);
     }
+    setButtonsNames("                                                                ");
 }
 
 
@@ -229,13 +231,8 @@ Black
  * knight -♞
  * pawn - ♟︎
 
-
-
-
 */
 void MainWindow::setButtonsNames(QString board){
-    //std::reverse(board.begin(),board.end());
-
     for(int i =63;i>-1;i--){
         switch(board[i].toLatin1()){
             case 'K':{
@@ -299,7 +296,8 @@ void MainWindow::readDataFromServer()
     //XE1 - remis
     //XE2 - biale wygraly
     //XE3 - czarne wygraly
-    //XD2 -
+    //XD2 - porzucenie partii
+    ui->waitingLabel->hide();
     if(TCPSocket){
         if(TCPSocket->isOpen()){
             QByteArray recvMessage = TCPSocket->readAll();
@@ -310,16 +308,16 @@ void MainWindow::readDataFromServer()
                 ui->endBox->show();
                 if(recvMessage[1]=='E'){
                     if(recvMessage[2]=='1'){
-                        ui->endLabel->setText("Koniec gry, remis!");
+                        ui->endLabel->setText("Game over, draw!");
                     }
                     if(recvMessage[2]=='2'){
-                        ui->endLabel->setText("Koniec gry, białe wygrały!");
+                        ui->endLabel->setText("Game over, white wins!");
                     }
                     if(recvMessage[2]=='3'){
-                        ui->endLabel->setText("Koniec gry, czarne wygrały!");
+                        ui->endLabel->setText("Game over, black wins!");
                     }
                 }else if(recvMessage[1]=='D'){
-                    ui->endLabel->setText("Przeciwnik porzucił grę, wygrałeś!");
+                    ui->endLabel->setText("Your opponent has left the game, you won!");
                 }
             }
         }

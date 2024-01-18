@@ -66,7 +66,7 @@ void * socketThread(void *arg)
 
   int n4,n5;
   //printf("\n%s\n",game->getBoard().c_str());
-  n4 = send(newSocket2,game->getBoard().c_str(),sizeof(recvMessage),0);
+  //n4 = send(newSocket2,game->getBoard().c_str(),sizeof(recvMessage),0);
   n5 = send(newSocket1,game->getBoard().c_str(),sizeof(recvMessage),0);
   if(n4==0||n4==-1||n5==0||n5==-1){
     printf("Błąd wysyłania\n");
@@ -119,6 +119,7 @@ void * socketThread(void *arg)
     if(n==-1){
       //TODO obsługa
       printf("Błąd recv()==-1\n");
+      break;
     }
 
 

@@ -212,8 +212,6 @@ void MainWindow::newGameButtonClicked()
 }
 
 
-
-
 /*
  * White
  * king - ♔

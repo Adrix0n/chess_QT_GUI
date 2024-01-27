@@ -51,4 +51,3 @@ void DragWidget::mousePressEvent(QMouseEvent *event)
     drag->setPixmap(pixmap);
     drag->setHotSpot(event->pos() - child->pos());
 }
-

@@ -64,11 +64,11 @@ void * socketThread(void *arg)
   struct user *player = &activeUsers[useridx];
   activeUsersMutex.unlock();
 
-  int n4,n5;
+  int n5;
   //printf("\n%s\n",game->getBoard().c_str());
   //n4 = send(newSocket2,game->getBoard().c_str(),sizeof(recvMessage),0);
   n5 = send(newSocket1,game->getBoard().c_str(),sizeof(recvMessage),0);
-  if(n4==0||n4==-1||n5==0||n5==-1){
+  if(n5==0||n5==-1){
     printf("Błąd wysyłania\n");
   }
 
@@ -205,7 +205,7 @@ void * socketThread(void *arg)
   pthread_exit(NULL);
 }
 
-int main(){
+int main(int argc, char *argv[]){
 
   // ----- Server initialization -----
   int serverSocket;
@@ -340,8 +340,8 @@ int main(){
             user2.userSocket = newSockets[notPairedClients];
 
 
-            long threadParams1[4] = {user2.userSocket,user1.userSocket,user2.gameID,user2.userID};
-            long threadParams2[4] = {user1.userSocket,user2.userSocket,user2.gameID,user1.userID};
+            long threadParams1[4] = {user1.userSocket,user2.userSocket,user2.gameID,user1.userID};
+            long threadParams2[4] = {user2.userSocket,user1.userSocket,user2.gameID,user2.userID};
 
             if( pthread_create(&thread_id1,NULL,socketThread,&threadParams1) != 0 )
              printf("Failed to create thread\n");
